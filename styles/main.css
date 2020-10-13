@@ -1,0 +1,91 @@
+:root {
+    --div-p-top: 5%;
+    --div-search-box-top: 40%;
+    --div-search-box-left: 43%;
+    --div-img-top: 35%;
+    --div-img-left: 65%;
+}
+body{
+    background-color: rgb(1, 79, 157);
+    background-image: url("../utility/images/weather_channel_bg_new.png");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.weather_image{
+    background-repeat: no-repeat;
+    background-color: rgb(1, 79, 157);
+    visibility: hidden;
+}
+.weather_image img{
+    position: absolute;
+    top: var(--div-img-top);
+    left: var(--div-img-left); 
+    height: 170px;
+    width: 170px;
+}
+
+.autocomplete-items{
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    z-index: 99;
+    left: 0;
+    right: 0;
+}
+.autocomplete-items div {
+    padding: 5px;
+    background-color: #fff;
+    border-bottom: 1px solid #d4d4d4;
+  }
+.autocomplete-items div:hover {
+    background-color: #817f7f;
+    cursor: pointer;
+}
+.autocomplete-active {
+    /*when navigating through the items using the arrow keys:*/
+    background-color: DodgerBlue !important;
+    color: #ffffff;
+}
+.search-box{
+    position: absolute;
+    width: 100%;
+    max-width: 300px;
+    padding: 10px 15px;
+    border: none;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 16px 0px 16px 0px;
+    border-bottom: 3px solid orange;
+    top: var(--div-search-box-top);
+    left: var(--div-search-box-left);
+}
+.search-box input{
+    font-size: 17px;
+}
+.search-box :focus{
+    background-color: rgba(255, 255, 255, 0.6);
+}
+/* .search-btn{
+    position: absolute;
+    top: var(--div-search-btn-top);
+    left: var(--div-search-btn-left);
+    color: black;
+} */
+p{
+    position: relative;
+    top: var(--div-p-top);
+}
+table{
+    width: 100%;
+    text-align: center;
+}
+table, th, td{
+    border: 1px solid black
+}
+th, td{
+    padding: 10px;
+}
+th{
+    font-size: large;
+}   
