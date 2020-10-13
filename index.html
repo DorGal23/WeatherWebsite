@@ -1,0 +1,104 @@
+<html>
+    <head>
+        <title>Weather Forecast</title>
+        <link href="styles/main.css" rel="stylesheet" />
+    </head>
+
+    <body>
+        <form id="add" autocomplete="off" action="">
+        <div class="search-box">
+            <input id="search-box" type="text" name="" placeholder="Type country/city">
+            <input id="search-btn" type="button" value="Search" onclick="printData()">
+        </div>
+        </form>
+        <div class="weather_image">
+            <img src="./utility/images/warm_weather.gif" id="warm" >
+            <img src="./utility/images/cold_weather.gif" id="cold">
+        </div>
+        <p id="today_table"></p>
+        <p id="forecast_table"></p>
+        
+        <script src="./js/autofill.js"></script>
+        <script>
+            if (navigator.userAgent.match(/Android/i)
+                || navigator.userAgent.match(/webOS/i)
+                || navigator.userAgent.match(/iPhone/i)
+                || navigator.userAgent.match(/iPad/i)
+                || navigator.userAgent.match(/iPod/i)
+                || navigator.userAgent.match(/BlackBerry/i)
+                || navigator.userAgent.match(/Windows Phone/i)){
+                document.documentElement.style.setProperty(`--div-search-box-top`, `38%`);
+                document.documentElement.style.setProperty(`--div-img-top`, `27%`);
+                document.documentElement.style.setProperty(`--div-search-box-left`, `36%`);
+                document.documentElement.style.setProperty(`--div-img-left`, `40%`);
+                document.documentElement.style.setProperty(`--div-p-top`, `10%`);
+            }
+        </script>
+        <script>
+            var x = document.getElementById("search-box").addEventListener("keydown", (e)=>e.keyCode==13?printData():"");
+        </script>
+        <script>
+            function printData(){
+                var x = document.getElementById("add");
+                var location = x.elements[0].value;
+                fetch(`http://api.weatherapi.com/v1/forecast.json?key=5db199b6357242028a4181449202309&q=${location}&days=8`) 
+                    // Converting received data to JSON 
+                    .then(function (respone){return respone.json();})
+                    .then(function (json){
+                        document.getElementById("today_table").innerHTML = `<table>
+                                                                                <tr>
+                                                                                    <th>Location</th>
+                                                                                    <th>Curr Temp</th>
+                                                                                    <th>Max Temp (Daily)</th> 
+                                                                                    <th>Min Temp (Daily)</th>
+                                                                                    <th>Humidity</th>
+                                                                                    <th>Wind Speed</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>${json.location.name}, ${json.location.region}, ${json.location.country}</td>
+                                                                                    <td>${json.current.temp_c} C&#176</td>
+                                                                                    <td>${json.forecast.forecastday[0].day.maxtemp_c} C&#176</td>
+                                                                                    <td>${json.forecast.forecastday[0].day.mintemp_c} C&#176</td>
+                                                                                    <td>${json.current.humidity}%</td>
+                                                                                    <td>${json.current.wind_kph}k/s</td>
+                                                                                </tr>
+                                                                            </table>`;
+                    if (json.current.temp_c > 15){
+                        document.getElementById("warm").style.visibility = "visible";
+                        document.getElementById("cold").style.visibility = "hidden";
+                    } 
+                    else{
+                        document.getElementById("cold").style.visibility = "visible";
+                        document.getElementById("warm").style.visibility = "hidden";
+                    }
+                        var d = new Date();
+                        var weekday = new Array(7);
+                        weekday[0] = "Sunday";
+                        weekday[1] = "Monday";
+                        weekday[2] = "Tuesday";
+                        weekday[3] = "Wednesday";
+                        weekday[4] = "Thursday";
+                        weekday[5] = "Friday";
+                        weekday[6] = "Saturday";
+                        document.getElementById("forecast_table").innerHTML = `<table>
+                                                                                <tr>
+                                                                                    <th>${weekday[(d.getDay()+1)%7]}</th>
+                                                                                    <th>${weekday[(d.getDay()+2)%7]}</th> 
+                                                                                    <th>${weekday[(d.getDay()+3)%7]}</th>
+                                                                                    <th>${weekday[(d.getDay()+4)%7]}</th>
+                                                                                    <th>${weekday[(d.getDay()+5)%7]}</th>
+                                                                                    <th>${weekday[(d.getDay()+6)%7]}</th>
+                                                                                    <th>${weekday[(d.getDay()+7)%7]}</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>${Math.round(json.forecast.forecastday[1].day.maxtemp_c)} C&#176/
+                                                                                        ${Math.round(json.forecast.forecastday[1].day.mintemp_c)} C&#176</td>
+                                                                                    <td>${Math.round(json.forecast.forecastday[2].day.maxtemp_c)} C&#176/
+                                                                                        ${Math.round(json.forecast.forecastday[2].day.mintemp_c)} C&#176</td>
+                                                                                </tr>
+                                                                                </table>`;
+                    });                        
+            }
+        </script>
+    </body>
+</html>
